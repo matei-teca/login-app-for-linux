@@ -1,10 +1,7 @@
+package org.example;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FirstSwingExample {
     // Predefined username and password
@@ -31,64 +28,55 @@ public class FirstSwingExample {
         loginButton.setBounds(130, 200, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Login button
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
 
-                // Check if username and password match predefined values
-                if (USERNAME.equals(username) && PASSWORD.equals(password)) {
-                    JOptionPane.showMessageDialog(f, "Login successful!");
-                } else {
-                    JOptionPane.showMessageDialog(f, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                // Clear fields after login attempt
-                usernameField.setText("");
-                passwordField.setText("");
+            // Check if username and password match predefined values
+            if (USERNAME.equals(username) && PASSWORD.equals(password)) {
+                JOptionPane.showMessageDialog(f, "Login successful!");
+            } else {
+                JOptionPane.showMessageDialog(f, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
+            // Clear fields after login attempt
+            usernameField.setText("");
+            passwordField.setText("");
         });
 
         JButton cancelButton = new JButton("Cancel");//creating instance of JButton
         cancelButton.setBounds(250, 200, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Cancel button
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Clear fields when Cancel button is clicked
-                usernameField.setText("");
-                passwordField.setText("");
-            }
+        cancelButton.addActionListener(e -> {
+            // Clear fields when Cancel button is clicked
+            usernameField.setText("");
+            passwordField.setText("");
         });
 
         JButton settingsButton = new JButton("Settings");//creating instance of JButton
         settingsButton.setBounds(130, 250, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Settings button
-        settingsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Show settings dialog with options
-                String[] options = {"Change Background Color", "Resizable Text", "Other Settings"};
-                int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        settingsButton.addActionListener(e -> {
+            // Show settings dialog with options
+            String[] options = {"Change Background Color", "Resizable Text", "Other Settings"};
+            int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-                if (choice == 0) {
-                    // Change Background Color
-                    Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
-                    if (newColor != null) {
-                        f.getContentPane().setBackground(newColor);
-                    }
-                } else if (choice == 1) {
-                    // Resizable Text
-                    showResizableTextDialog(f, panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
-                } else if (choice == 2) {
-                    // Other Settings
-                    // Show additional settings dialog
-                    showAdditionalSettingsDialog(f);
+            if (choice == 0) {
+                // Change Background Color
+                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
+                if (newColor != null) {
+                    f.getContentPane().setBackground(newColor);
                 }
+            } else if (choice == 1) {
+                // Resizable Text
+                showResizableTextDialog(f, panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
+            } else if (choice == 2) {
+                // Other Settings
+                // Show additional settings dialog
+                showAdditionalSettingsDialog(f);
             }
         });
 
@@ -119,33 +107,27 @@ public class FirstSwingExample {
         textSizeSlider.setMinorTickSpacing(1);
         textSizeSlider.setPaintTicks(true);
         textSizeSlider.setPaintLabels(true);
-        textSizeSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                // Adjust text size and component size
-                int newSize = textSizeSlider.getValue();
-                Font newFont = new Font("SansSerif", Font.PLAIN, newSize);
-                usernameLabel.setFont(newFont);
-                usernameField.setFont(newFont);
-                passwordLabel.setFont(newFont);
-                passwordField.setFont(newFont);
-                loginButton.setFont(newFont);
-                cancelButton.setFont(newFont);
-                settingsButton.setFont(newFont);
+        textSizeSlider.addChangeListener(e -> {
+            // Adjust text size and component size
+            int newSize = textSizeSlider.getValue();
+            Font newFont = new Font("SansSerif", Font.PLAIN, newSize);
+            usernameLabel.setFont(newFont);
+            usernameField.setFont(newFont);
+            passwordLabel.setFont(newFont);
+            passwordField.setFont(newFont);
+            loginButton.setFont(newFont);
+            cancelButton.setFont(newFont);
+            settingsButton.setFont(newFont);
 
-                // Update component size
-                updateComponentSize(panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
-            }
+            // Update component size
+            updateComponentSize(panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
         });
 
         // Apply button
         JButton applyButton = new JButton("Apply");
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Close dialog after applying settings
-                dialog.dispose();
-            }
+        applyButton.addActionListener(e -> {
+            // Close dialog after applying settings
+            dialog.dispose();
         });
 
         dialog.add(textSizeSlider);
