@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -56,14 +57,30 @@ public class FirstSwingExample {
             }
         });
 
+        JButton settingsButton = new JButton("Settings");//creating instance of JButton
+        settingsButton.setBounds(130, 250, 100, 40);//x axis, y axis, width, height
+
+        // Adding ActionListener to the Settings button
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show settings dialog
+                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
+                if (newColor != null) {
+                    f.getContentPane().setBackground(newColor);
+                }
+            }
+        });
+
         f.add(usernameLabel);
         f.add(usernameField);
         f.add(passwordLabel);
         f.add(passwordField);
         f.add(loginButton);//adding button in JFrame
         f.add(cancelButton);//adding button in JFrame
+        f.add(settingsButton);//adding button in JFrame
 
-        f.setSize(400, 300);//400 width and 300 height
+        f.setSize(400, 350);//400 width and 350 height
         f.setLayout(null);//using no layout managers
         f.setVisible(true);//making the frame visible
     }
