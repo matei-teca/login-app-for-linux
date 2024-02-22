@@ -1,7 +1,7 @@
-package org.example;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FirstSwingExample {
     // Predefined username and password
@@ -25,52 +25,61 @@ public class FirstSwingExample {
         loginButton.setBounds(130, 200, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Login button
-        loginButton.addActionListener(e -> {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
 
-            // Check if username and password match predefined values
-            if (USERNAME.equals(username) && PASSWORD.equals(password)) {
-                JOptionPane.showMessageDialog(f, "Login successful!");
-            } else {
-                JOptionPane.showMessageDialog(f, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                // Check if username and password match predefined values
+                if (USERNAME.equals(username) && PASSWORD.equals(password)) {
+                    JOptionPane.showMessageDialog(f, "Login successful!");
+                } else {
+                    JOptionPane.showMessageDialog(f, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // Clear fields after login attempt
+                usernameField.setText("");
+                passwordField.setText("");
             }
-
-            // Clear fields after login attempt
-            usernameField.setText("");
-            passwordField.setText("");
         });
 
         JButton cancelButton = new JButton("Cancel");//creating instance of JButton
         cancelButton.setBounds(250, 200, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Cancel button
-        cancelButton.addActionListener(e -> {
-            // Clear fields when Cancel button is clicked
-            usernameField.setText("");
-            passwordField.setText("");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Clear fields when Cancel button is clicked
+                usernameField.setText("");
+                passwordField.setText("");
+            }
         });
 
         JButton settingsButton = new JButton("Settings");//creating instance of JButton
         settingsButton.setBounds(130, 250, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Settings button
-        settingsButton.addActionListener(e -> {
-            // Show settings dialog with options
-            String[] options = {"Change Background Color", "Other Settings"};
-            int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show settings dialog with options
+                String[] options = {"Change Background Color", "Other Settings"};
+                int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-            if (choice == 0) {
-                // Change Background Color
-                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
-                if (newColor != null) {
-                    f.getContentPane().setBackground(newColor);
+                if (choice == 0) {
+                    // Change Background Color
+                    Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
+                    if (newColor != null) {
+                        f.getContentPane().setBackground(newColor);
+                    }
+                } else if (choice == 1) {
+                    // Other Settings
+                    // Show additional settings dialog
+                    showAdditionalSettingsDialog(f);
                 }
-            } else if (choice == 1) {
-                // Other Settings
-                // Show additional settings dialog
-                showAdditionalSettingsDialog(f);
             }
         });
 
@@ -88,7 +97,36 @@ public class FirstSwingExample {
     }
 
     private static void showAdditionalSettingsDialog(JFrame parentFrame) {
-        // Implement additional settings dialog here
-        JOptionPane.showMessageDialog(parentFrame, "Additional settings dialog will be shown here.");
+        // Create and show additional settings dialog
+        JDialog dialog = new JDialog(parentFrame, "Additional Settings", true);
+        dialog.setLayout(new GridLayout(2, 1));
+
+        // Accessibility settings
+        JLabel accessibilityLabel = new JLabel("Accessibility Settings:");
+        JCheckBox accessibilityCheckBox = new JCheckBox("Enable Accessibility Features");
+        dialog.add(accessibilityLabel);
+        dialog.add(accessibilityCheckBox);
+
+        // Apply button
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Apply accessibility settings
+                if (accessibilityCheckBox.isSelected()) {
+                    // Enable accessibility features
+                    JOptionPane.showMessageDialog(parentFrame, "Accessibility features enabled.");
+                }
+
+                // Close dialog after applying settings
+                dialog.dispose();
+            }
+        });
+        dialog.add(applyButton);
+
+        // Set dialog size and visibility
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(parentFrame);
+        dialog.setVisible(true);
     }
 }
