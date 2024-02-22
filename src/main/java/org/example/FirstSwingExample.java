@@ -46,6 +46,16 @@ public class FirstSwingExample {
         JButton cancelButton = new JButton("Cancel");//creating instance of JButton
         cancelButton.setBounds(250, 200, 100, 40);//x axis, y axis, width, height
 
+        // Adding ActionListener to the Cancel button
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Clear fields when Cancel button is clicked
+                usernameField.setText("");
+                passwordField.setText("");
+            }
+        });
+
         f.add(usernameLabel);
         f.add(usernameField);
         f.add(passwordLabel);
