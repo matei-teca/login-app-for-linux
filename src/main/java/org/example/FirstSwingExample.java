@@ -1,5 +1,3 @@
-package org.example;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -60,20 +58,23 @@ public class FirstSwingExample {
         // Adding ActionListener to the Settings button
         settingsButton.addActionListener(e -> {
             // Show settings dialog with options
-            String[] options = {"Change Background Color", "Resizable Text", "Other Settings"};
+            String[] options = {"Other Settings", "Accessibility", "Security", "Appearance"};
             int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-            if (choice == 0) {
+            if (choice == 3) {
                 // Change Background Color
                 Color newColor = JColorChooser.showDialog(f, "Choose Background Color", panel.getBackground());
                 if (newColor != null) {
                     panel.setBackground(newColor);
                 }
+            } else if (choice == 2) {
+                // Security Settings (Biometrics)
+                showBiometricsSettingsDialog(f);
             } else if (choice == 1) {
                 // Resizable Text
                 showResizableTextDialog(f, panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
-            } else if (choice == 2) {
+            } else if (choice == 0) {
                 // Other Settings
                 // Show additional settings dialog
                 showAdditionalSettingsDialog(f);
@@ -173,5 +174,37 @@ public class FirstSwingExample {
     private static void showAdditionalSettingsDialog(JFrame parentFrame) {
         // Create and show additional settings dialog
         JOptionPane.showMessageDialog(parentFrame, "Additional settings dialog will be shown here.");
+    }
+
+    private static void showBiometricsSettingsDialog(JFrame parentFrame) {
+        // Create biometrics settings dialog
+        JDialog dialog = new JDialog(parentFrame, "Biometrics Settings", true);
+        dialog.setLayout(new GridLayout(2, 1));
+
+        // Biometrics toggle
+        JCheckBox biometricsCheckbox = new JCheckBox("Can we do it Tavi? :)");
+        biometricsCheckbox.setSelected(false); // Default is disabled
+
+        // Apply button
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(e -> {
+            boolean biometricsEnabled = biometricsCheckbox.isSelected();
+            if (biometricsEnabled) {
+                JOptionPane.showMessageDialog(dialog, "Biometric authentication enabled.");
+                // Here you can add code to enable biometric authentication
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Biometric authentication disabled.");
+                // Here you can add code to disable biometric authentication
+            }
+            dialog.dispose();
+        });
+
+        dialog.add(biometricsCheckbox);
+        dialog.add(applyButton);
+
+        // Set dialog size and visibility
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(parentFrame);
+        dialog.setVisible(true);
     }
 }
