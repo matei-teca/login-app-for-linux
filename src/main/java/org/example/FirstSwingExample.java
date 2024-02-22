@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +13,9 @@ public class FirstSwingExample {
 
     public static void main(String[] args) {
         JFrame f = new JFrame();//creating instance of JFrame
+
+        JPanel panel = new JPanel(null);
+        f.add(panel);
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(50, 100, 80, 25);
@@ -65,7 +71,7 @@ public class FirstSwingExample {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Show settings dialog with options
-                String[] options = {"Change Background Color", "Other Settings"};
+                String[] options = {"Change Background Color", "Resizable Text", "Other Settings"};
                 int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
@@ -76,62 +82,108 @@ public class FirstSwingExample {
                         f.getContentPane().setBackground(newColor);
                     }
                 } else if (choice == 1) {
+                    // Resizable Text
+                    showResizableTextDialog(f, panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
+                } else if (choice == 2) {
                     // Other Settings
                     // Show additional settings dialog
-                    showAdditionalSettingsDialog(f, usernameField, passwordField);
+                    showAdditionalSettingsDialog(f);
                 }
             }
         });
 
-        f.add(usernameLabel);
-        f.add(usernameField);
-        f.add(passwordLabel);
-        f.add(passwordField);
-        f.add(loginButton);//adding button in JFrame
-        f.add(cancelButton);//adding button in JFrame
-        f.add(settingsButton);//adding button in JFrame
+        panel.add(usernameLabel);
+        panel.add(usernameField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+        panel.add(loginButton);//adding button in JFrame
+        panel.add(cancelButton);//adding button in JFrame
+        panel.add(settingsButton);//adding button in JFrame
 
         f.setSize(400, 350);//400 width and 350 height
-        f.setLayout(null);//using no layout managers
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);//making the frame visible
     }
 
-    private static void showAdditionalSettingsDialog(JFrame parentFrame, JTextField usernameField, JPasswordField passwordField) {
-        // Create and show additional settings dialog
-        JDialog dialog = new JDialog(parentFrame, "Additional Settings", true);
-        dialog.setLayout(new GridLayout(2, 1));
+    private static void showResizableTextDialog(JFrame parentFrame, JPanel panel, JLabel usernameLabel, JTextField usernameField,
+                                                JLabel passwordLabel, JPasswordField passwordField,
+                                                JButton loginButton, JButton cancelButton, JButton settingsButton) {
 
-        // Accessibility settings
-        JLabel accessibilityLabel = new JLabel("Accessibility Settings:");
-        JCheckBox accessibilityCheckBox = new JCheckBox("Enable Accessibility Features");
-        dialog.add(accessibilityLabel);
-        dialog.add(accessibilityCheckBox);
+        // Create and show resizable text dialog
+        JDialog dialog = new JDialog(parentFrame, "Resizable Text", true);
+        dialog.setLayout(new GridLayout(1, 2));
+
+        // Text size slider
+        JSlider textSizeSlider = new JSlider(JSlider.HORIZONTAL, 10, 30, 12);
+        textSizeSlider.setMajorTickSpacing(5);
+        textSizeSlider.setMinorTickSpacing(1);
+        textSizeSlider.setPaintTicks(true);
+        textSizeSlider.setPaintLabels(true);
+        textSizeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                // Adjust text size and component size
+                int newSize = textSizeSlider.getValue();
+                Font newFont = new Font("SansSerif", Font.PLAIN, newSize);
+                usernameLabel.setFont(newFont);
+                usernameField.setFont(newFont);
+                passwordLabel.setFont(newFont);
+                passwordField.setFont(newFont);
+                loginButton.setFont(newFont);
+                cancelButton.setFont(newFont);
+                settingsButton.setFont(newFont);
+
+                // Update component size
+                updateComponentSize(panel, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, cancelButton, settingsButton);
+            }
+        });
 
         // Apply button
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Apply accessibility settings
-                if (accessibilityCheckBox.isSelected()) {
-                    // Enable accessibility features
-                    usernameField.setFont(new Font(usernameField.getFont().getName(), usernameField.getFont().getStyle(), 16));
-                    passwordField.setFont(new Font(passwordField.getFont().getName(), passwordField.getFont().getStyle(), 16));
-                } else {
-                    // Disable accessibility features
-                    usernameField.setFont(new Font(usernameField.getFont().getName(), usernameField.getFont().getStyle(), 12));
-                    passwordField.setFont(new Font(passwordField.getFont().getName(), passwordField.getFont().getStyle(), 12));
-                }
-
                 // Close dialog after applying settings
                 dialog.dispose();
             }
         });
+
+        dialog.add(textSizeSlider);
+        dialog.add(new JLabel()); // Add an empty label for spacing
         dialog.add(applyButton);
 
-        // Set dialog size and visibility
+        // Set dialog location relative to parent frame
         dialog.setSize(300, 150);
-        dialog.setLocationRelativeTo(parentFrame);
         dialog.setVisible(true);
+
+    }
+
+    private static void updateComponentSize(JPanel panel, JLabel usernameLabel, JTextField usernameField,
+                                            JLabel passwordLabel, JPasswordField passwordField,
+                                            JButton loginButton, JButton cancelButton, JButton settingsButton) {
+        // Calculate maximum text width
+        int maxTextWidth = Math.max(usernameLabel.getPreferredSize().width, passwordLabel.getPreferredSize().width);
+        maxTextWidth = Math.max(maxTextWidth, loginButton.getPreferredSize().width);
+        maxTextWidth = Math.max(maxTextWidth, cancelButton.getPreferredSize().width);
+        maxTextWidth = Math.max(maxTextWidth, settingsButton.getPreferredSize().width);
+
+        // Set new component bounds
+        usernameLabel.setBounds(50, 100, maxTextWidth, 25);
+        usernameField.setBounds(50 + maxTextWidth + 10, 100, 200, 25);
+        passwordLabel.setBounds(50, 150, maxTextWidth, 25);
+        passwordField.setBounds(50 + maxTextWidth + 10, 150, 200, 25);
+        loginButton.setBounds(130, 200, 100, 40);
+        cancelButton.setBounds(250, 200, 100, 40);
+        settingsButton.setBounds(130, 250, 100, 40);
+
+        // Update panel size
+        panel.setPreferredSize(new Dimension(400, 350));
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private static void showAdditionalSettingsDialog(JFrame parentFrame) {
+        // Create and show additional settings dialog
+        JOptionPane.showMessageDialog(parentFrame, "Additional settings dialog will be shown here.");
     }
 }
