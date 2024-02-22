@@ -1,6 +1,7 @@
-package org.example;
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class FirstSwingExample {
@@ -66,9 +67,9 @@ public class FirstSwingExample {
 
             if (choice == 0) {
                 // Change Background Color
-                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
+                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", panel.getBackground());
                 if (newColor != null) {
-                    f.getContentPane().setBackground(newColor);
+                    panel.setBackground(newColor);
                 }
             } else if (choice == 1) {
                 // Resizable Text
