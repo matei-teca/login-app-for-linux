@@ -78,7 +78,7 @@ public class FirstSwingExample {
                 } else if (choice == 1) {
                     // Other Settings
                     // Show additional settings dialog
-                    showAdditionalSettingsDialog(f);
+                    showAdditionalSettingsDialog(f, usernameField, passwordField);
                 }
             }
         });
@@ -96,7 +96,7 @@ public class FirstSwingExample {
         f.setVisible(true);//making the frame visible
     }
 
-    private static void showAdditionalSettingsDialog(JFrame parentFrame) {
+    private static void showAdditionalSettingsDialog(JFrame parentFrame, JTextField usernameField, JPasswordField passwordField) {
         // Create and show additional settings dialog
         JDialog dialog = new JDialog(parentFrame, "Additional Settings", true);
         dialog.setLayout(new GridLayout(2, 1));
@@ -115,7 +115,12 @@ public class FirstSwingExample {
                 // Apply accessibility settings
                 if (accessibilityCheckBox.isSelected()) {
                     // Enable accessibility features
-                    JOptionPane.showMessageDialog(parentFrame, "Accessibility features enabled.");
+                    usernameField.setFont(new Font(usernameField.getFont().getName(), usernameField.getFont().getStyle(), 16));
+                    passwordField.setFont(new Font(passwordField.getFont().getName(), passwordField.getFont().getStyle(), 16));
+                } else {
+                    // Disable accessibility features
+                    usernameField.setFont(new Font(usernameField.getFont().getName(), usernameField.getFont().getStyle(), 12));
+                    passwordField.setFont(new Font(passwordField.getFont().getName(), passwordField.getFont().getStyle(), 12));
                 }
 
                 // Close dialog after applying settings
