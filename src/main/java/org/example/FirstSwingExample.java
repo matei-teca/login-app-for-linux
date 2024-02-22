@@ -64,10 +64,21 @@ public class FirstSwingExample {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Show settings dialog
-                Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
-                if (newColor != null) {
-                    f.getContentPane().setBackground(newColor);
+                // Show settings dialog with options
+                String[] options = {"Change Background Color", "Other Settings"};
+                int choice = JOptionPane.showOptionDialog(f, "Choose an option:", "Settings", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+                if (choice == 0) {
+                    // Change Background Color
+                    Color newColor = JColorChooser.showDialog(f, "Choose Background Color", f.getContentPane().getBackground());
+                    if (newColor != null) {
+                        f.getContentPane().setBackground(newColor);
+                    }
+                } else if (choice == 1) {
+                    // Other Settings
+                    // Show additional settings dialog
+                    showAdditionalSettingsDialog(f);
                 }
             }
         });
@@ -83,5 +94,10 @@ public class FirstSwingExample {
         f.setSize(400, 350);//400 width and 350 height
         f.setLayout(null);//using no layout managers
         f.setVisible(true);//making the frame visible
+    }
+
+    private static void showAdditionalSettingsDialog(JFrame parentFrame) {
+        // Implement additional settings dialog here
+        JOptionPane.showMessageDialog(parentFrame, "Additional settings dialog will be shown here.");
     }
 }
