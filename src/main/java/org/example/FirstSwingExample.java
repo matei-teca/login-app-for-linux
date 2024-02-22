@@ -154,6 +154,12 @@ public class FirstSwingExample {
 
         // Set dialog location relative to parent frame
         dialog.setSize(300, 150);
+
+        Point parentLocation = parentFrame.getLocation();
+        int x = parentLocation.x;
+        int y = parentLocation.y + 350;
+        dialog.setLocation(x, y);
+
         dialog.setVisible(true);
 
     }
