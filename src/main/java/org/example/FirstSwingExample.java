@@ -8,22 +8,20 @@ public class FirstSwingExample {
 
     public static void main(String[] args) {
         JFrame f = new JFrame();//creating instance of JFrame
-
-        JPanel panel = new JPanel(null);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
         f.add(panel);
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setBounds(50, 100, 80, 25);
-        JTextField usernameField = new JTextField();
-        usernameField.setBounds(130, 100, 200, 25);
+        JTextField usernameField = new JTextField(15);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(50, 150, 80, 25);
-        JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(130, 150, 200, 25);
+        JPasswordField passwordField = new JPasswordField(15);
 
         JButton loginButton = new JButton("Login");//creating instance of JButton
-        loginButton.setBounds(130, 200, 100, 40);//x axis, y axis, width, height
+        JButton cancelButton = new JButton("Cancel");//creating instance of JButton
+        JButton settingsButton = new JButton("Settings");//creating instance of JButton
 
         // Adding ActionListener to the Login button
         loginButton.addActionListener(e -> {
@@ -42,18 +40,12 @@ public class FirstSwingExample {
             passwordField.setText("");
         });
 
-        JButton cancelButton = new JButton("Cancel");//creating instance of JButton
-        cancelButton.setBounds(250, 200, 100, 40);//x axis, y axis, width, height
-
         // Adding ActionListener to the Cancel button
         cancelButton.addActionListener(e -> {
             // Clear fields when Cancel button is clicked
             usernameField.setText("");
             passwordField.setText("");
         });
-
-        JButton settingsButton = new JButton("Settings");//creating instance of JButton
-        settingsButton.setBounds(130, 250, 100, 40);//x axis, y axis, width, height
 
         // Adding ActionListener to the Settings button
         settingsButton.addActionListener(e -> {
@@ -81,16 +73,41 @@ public class FirstSwingExample {
             }
         });
 
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(loginButton);//adding button in JFrame
-        panel.add(cancelButton);//adding button in JFrame
-        panel.add(settingsButton);//adding button in JFrame
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(usernameLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        panel.add(passwordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(loginButton, gbc);
+
+        gbc.gridy = 3;
+        panel.add(cancelButton, gbc);
+
+        gbc.gridy = 4;
+        panel.add(settingsButton, gbc);
 
         f.setSize(400, 350);//400 width and 350 height
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Calculate center position relative to screen size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - f.getWidth()) / 2;
+        int y = (screenSize.height - f.getHeight()) / 2;
+        f.setLocation(x, y);
+
         f.setVisible(true);//making the frame visible
     }
 
@@ -138,10 +155,10 @@ public class FirstSwingExample {
         // Set dialog location relative to parent frame
         dialog.setSize(300, 150);
 
-        Point parentLocation = parentFrame.getLocation();
-        int x = parentLocation.x;
-        int y = parentLocation.y + 350;
-        dialog.setLocation(x, y);
+//        Point parentLocation = parentFrame.getLocation();
+//        int x = parentLocation.x;
+//        int y = parentLocation.y + 350;
+//        dialog.setLocation(x, y);
 
         dialog.setVisible(true);
 
